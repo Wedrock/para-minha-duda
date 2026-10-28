@@ -301,38 +301,13 @@ const CENA2 = {
   },
 };
 
-function maosPalmas(alvo, p, ombros, nome, fase, k) {
-  if (k <= 0) return;
-  const o = ombros[nome], meio = [(o.in[0] + o.out[0]) / 2, o.in[1] + 7];
-  const gap = 4.5 * Math.abs(Math.sin(Math.PI * fase));            // as mãos batem na batida
-  const dir = o.in[0] > o.out[0] ? 1 : -1;
-  misturar(alvo, nome, "in", [meio[0] + dir * gap, meio[1]], k);
-  misturar(alvo, nome, "out", [meio[0] - dir * gap, meio[1]], k);
-}
-function maosAcima(alvo, p, ombros, nome, fase, k) {
-  if (k <= 0) return;
-  const o = ombros[nome], cx = (o.in[0] + o.out[0]) / 2, w = 2.5 * Math.sin(Math.PI * fase);
-  for (const qual of ["in", "out"]) {
-    const sh = o[qual], dir = sh[0] >= cx ? 1 : -1;
-    misturar(alvo, nome, qual, [sh[0] + dir * 4 + w, sh[1] - 19], k);
-  }
-}
-function pulos(cena, t, faixas, altura) {
-  for (const [a, b] of faixas)
-    if (t > a && t < b) {
-      const fase = (t - cena.beat0) / cena.beat;
-      return altura * Math.sin(Math.PI * (fase - Math.floor(fase))) * janela(a, a + 0.25, b - 0.25, b, t);
-    }
-  return 0;
-}
-
 // ------------------------------------------------------------ cena 3: Pra Sempre com Você (Jorge & Mateus)
-// Sertanejo animado: palmas, mãos dadas balançando, giros dos dois, o passo básico
-// do sertanejo abraçadinho (dois pra lá, dois pra cá quicando), pulinhos,
-// troca de lugar e um cambré no final.
+// Dança lenta: o convite, mãos dadas, giros devagar, dois pra lá dois pra cá
+// abraçadinhos, uma abertura de mãos dadas, cabeças encostadas e um cambré no final.
+// A música é rápida, então o corpo balança a cada duas batidas.
 const CENA3 = {
   id: "pra-sempre-com-voce", titulo: "Pra sempre com você", faixa: "música 3 de 3",
-  arquivo: "pra_sempre_com_voce.py", audio: MUSICA3, dur: 59.6, beat: 0.612, beat0: 0.165,
+  arquivo: "pra_sempre_com_voce.py", audio: MUSICA3, dur: 59.6, beat: 1.224, beat0: 0.165,
   letra: [
     [3.5, 5.8, "a gente se conheceu há pouco tempo"],
     [6.0, 6.9, "mas a gente já"],
@@ -359,57 +334,35 @@ const CENA3 = {
   dedicatoria: "♥  pra sempre com você  ♥", dedicT: 57.4,
   coracaoT: [57.2, 58.6], particulasT: 32.0, previa: 58.5,
   pose(t) {
-    const P = this.beat, s = sway(this, t);
-    const junto = smooth(3.0, 5.5, t);
-    const abre = janela(28.8, 29.8, 31.2, 32.2, t);
-    const lado = janela(38.6, 39.6, 44.4, 45.2, t);
-    const troca = smooth(39.6, 41.4, t) - smooth(42.6, 44.4, t);     // trocam de lugar e voltam
-    let dist = lerp(36, 14, junto);
-    dist = lerp(dist, 26, Math.max(abre, lado)) * (1 - 2 * troca);
-    const salao = janela(13.0, 13.8, 17.6, 18.2, t) + janela(49.8, 50.4, 52.6, 53.2, t);
-    const praLa = Math.sin(2 * Math.PI * (t - this.beat0) / (4 * P));
-    const abraco = janela(22.0, 23.0, 28.4, 29.2, t) + smooth(56.8, 57.6, t);
+    const s = sway(this, t);
+    const maosDadas = smooth(3.0, 5.5, t), junto = smooth(11.8, 13.2, t);
+    const abre = janela(28.8, 29.8, 31.0, 32.2, t);
+    const salao = junto * (1 - abre);
+    // dois pra lá, dois pra cá bem devagar
+    const praLa = Math.sin(2 * Math.PI * (t - this.beat0) / (4 * this.beat));
+    const final = smooth(48.0, 52.0, t);
+    let dist = lerp(lerp(34, 20, maosDadas), 13.5, junto);
+    dist = lerp(dist, 28, abre);
     return {
-      cx: W / 2 + 4.5 * praLa * salao + 2.5 * s * (1 - salao),
+      cx: W / 2 + 3 * praLa * salao * (1 - final) + 1.8 * s * (1 - salao),
       dist,
-      giro: 4 * Math.PI * smooth(8.4, 11.6, t) + 6 * Math.PI * smooth(32.4, 38.4, t) + 2 * Math.PI * smooth(45.2, 46.8, t),
-      giroVel: janela(8.4, 9.0, 11.0, 11.6, t) + janela(32.4, 33.0, 37.8, 38.4, t) + janela(45.2, 45.6, 46.4, 46.8, t),
-      giroB: 2 * Math.PI * smooth(18.2, 19.6, t),
-      pulo: pulos(this, t, [[20.1, 21.7], [54.3, 56.7]], 5),
-      energia: 1 - 0.65 * abraco,
-      perto: 0.11 * abraco + 0.07 * salao,                         // no sertanejo eles dançam coladinhos
-      cabecas: 0.16 * abraco + 0.08 * salao,
-      cambre: janela(58.0, 58.7, 60.0, 61.0, t),
+      giro: 2 * Math.PI * (smooth(8.6, 11.6, t) + smooth(33.6, 37.6, t) + smooth(45.0, 47.4, t)),
+      giroVel: 0.5 * (janela(8.6, 9.4, 10.8, 11.6, t) + janela(33.6, 34.4, 36.8, 37.6, t) + janela(45.0, 45.6, 46.8, 47.4, t)),
+      perto: 0.10 * salao + 0.04 * final,
+      cabecas: 0.12 * salao + 0.12 * smooth(22.0, 24.0, t) * (1 - abre) + 0.06 * final,
+      cambre: janela(58.0, 58.8, 60.0, 61.0, t),
+      lento: 0.5 + 0.5 * final,                       // passos pequenos o tempo todo
     };
   },
   maos(t, p, ombros) {
-    const fase = (t - this.beat0) / this.beat, s = sway(this, t);
+    const s = sway(this, t);
     const alvo = alvosSoltos(p, ombros, s);
     const k = (a, b, c, d) => janela(a, b, c, d, t);
-    // intro: os dois batendo palma
-    maosPalmas(alvo, p, ombros, "A", fase, k(0, 0.4, 3.0, 3.8));
-    maosPalmas(alvo, p, ombros, "B", fase, k(0, 0.4, 3.0, 3.8));
-    // de mãos dadas, balançando
-    maosDadas(alvo, p, ombros, Math.sin(Math.PI * fase), k(3.6, 4.4, 8.0, 8.5) + k(28.8, 29.6, 31.4, 32.2));
-    // A gira por baixo do braço de B
-    maosGiro(alvo, p, ombros, k(8.0, 8.6, 11.6, 12.3) + k(44.9, 45.3, 46.8, 47.3));
-    // sertanejo abraçadinho / abraço
-    maosAbraco(alvo, p, ombros, k(12.2, 13.0, 17.8, 18.2) + k(21.8, 22.6, 28.4, 29.0) + k(47.0, 47.6, 52.8, 53.3) + smooth(56.8, 57.4, t));
-    // B gira com as mãos pra cima e A bate palma
-    maosAcima(alvo, p, ombros, "B", fase, k(18.0, 18.3, 19.6, 20.0));
-    maosPalmas(alvo, p, ombros, "A", fase, k(18.0, 18.3, 19.6, 20.0));
-    // "o amor supera": pulinhos com as mãos pra cima
-    maosAcima(alvo, p, ombros, "A", fase, k(19.8, 20.1, 21.6, 22.0));
-    maosAcima(alvo, p, ombros, "B", fase, k(19.8, 20.1, 21.6, 22.0));
-    // "esse seu sorriso": A gira de mãos pra cima, B bate palma
-    maosAcima(alvo, p, ombros, "A", fase, k(32.2, 32.6, 38.4, 38.9));
-    maosPalmas(alvo, p, ombros, "B", fase, k(32.2, 32.6, 38.4, 38.9));
-    // instrumental: trocam de lugar com as mãos pra cima
-    maosAcima(alvo, p, ombros, "A", fase, k(38.8, 39.4, 44.4, 45.0));
-    maosAcima(alvo, p, ombros, "B", fase, k(38.8, 39.4, 44.4, 45.0));
-    // "cê sabe que eu vou, vou": pulando
-    maosAcima(alvo, p, ombros, "A", fase, k(52.9, 53.4, 56.5, 57.0));
-    maosAcima(alvo, p, ombros, "B", fase, k(52.9, 53.4, 56.5, 57.0));
+    misturar(alvo, "B", "in", [p.B.hx - 13, ombros.B.in[1] + 9], k(0.8, 2.4, 2.8, 3.6));   // convite
+    maosDadas(alvo, p, ombros, s, k(2.8, 3.8, 8.0, 8.6) + k(28.6, 29.4, 31.4, 32.2));
+    const giro = k(8.1, 8.7, 11.6, 12.2) + k(33.1, 33.7, 37.6, 38.2) + k(44.5, 45.1, 47.4, 48.0);
+    maosGiro(alvo, p, ombros, giro);
+    maosAbraco(alvo, p, ombros, smooth(11.8, 13.0, t) * (1 - Math.min(1, giro + k(28.4, 29.2, 31.6, 32.4))));
     misturar(alvo, "A", "out", [ombros.A.out[0] - 12, ombros.A.out[1] - 6], p.A.cambre || 0);
     return alvo;
   },
