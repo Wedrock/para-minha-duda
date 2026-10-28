@@ -4,7 +4,7 @@ Duas pessoas dançando em ASCII no ritmo de "I Wanna Be Yours", feito só com c�
 
 ## Abrir no navegador
 
-Abra o `index.html` no navegador, no computador ou no celular, e toque em **▶ dançar**. A música já vem dentro do arquivo.
+Abra o `index.html` no navegador, no computador ou no celular, e toque em `$ python danca.py`. A música já vem dentro do arquivo.
 
 Para ter um link, ative o GitHub Pages em Settings → Pages (branch `master`, pasta `/`).
 

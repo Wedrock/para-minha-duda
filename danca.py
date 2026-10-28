@@ -26,9 +26,9 @@ MUSICA = os.path.join(AQUI, "musica.wav")
 # Cada pessoa: cor do corpo, cor do cabelo, tamanho e detalhes.
 # Troque à vontade (ex.: "saia": True, "cabelo_longo": False).
 PESSOAS = {
-    "A": {"cor": (255, 105, 150), "cabelo": (200, 55, 110), "escala": 0.93,
+    "A": {"cor": (225, 150, 255), "cabelo": (150, 80, 215), "escala": 0.93,
           "cabelo_longo": True, "saia": False},
-    "B": {"cor": (255, 178, 85), "cabelo": (175, 95, 35), "escala": 1.0,
+    "B": {"cor": (145, 105, 255), "cabelo": (85, 50, 175), "escala": 1.0,
           "cabelo_longo": False, "saia": False},
 }
 
@@ -330,7 +330,7 @@ def montar(t):
         top = min(esqueleto["A"][2][1], esqueleto["B"][2][1])
         pulso = 1 + 0.07 * max(0.0, math.sin(2 * math.pi * (t - BEAT0) / BEAT))
         cx = (esqueleto["A"][2][0] + esqueleto["B"][2][0]) / 2
-        formas.append(Coracao((cx, top - 9 - 2 * k), 7 * k * pulso, 50, (255, 55, 90)))
+        formas.append(Coracao((cx, top - 9 - 2 * k), 7 * k * pulso, 50, (185, 75, 255)))
     return formas, esqueleto
 
 
@@ -407,11 +407,11 @@ def frame(t):
             if 9 <= r < ROWS and 0 <= c < COLS:
                 ch = "♥" if i % 3 else "*"
                 a = clamp(1.2 - vida / 3.5, 0, 1) * luz
-                grade[r][c] = (ch, (int(255 * a), int(90 * a), int(140 * a)))
+                grade[r][c] = (ch, (int(200 * a), int(110 * a), int(255 * a)))
 
     # "terminal" com a letra digitando
     cab = '[Running] python -u "danca.py"'
-    escrever(grade, 1, 2, cab[: int(len(cab) * smooth(0, 0.4, t) + 0.999)], (110, 130, 220))
+    escrever(grade, 1, 2, cab[: int(len(cab) * smooth(0, 0.4, t) + 0.999)], (140, 120, 225))
     for i, (ini, fim, txt) in enumerate(LETRA):
         if t < ini:
             break
@@ -423,7 +423,7 @@ def frame(t):
         n = int(len(DEDICATORIA) * clamp((t - 16.4) / 1.6, 0, 1) + 0.999)
         txt = DEDICATORIA[:n]
         escrever(grade, ROWS - 1, (COLS - len(DEDICATORIA)) // 2, txt,
-                 tuple(int(v * luz) for v in (255, 190, 215)))
+                 tuple(int(v * luz) for v in (225, 195, 255)))
     return grade
 
 
