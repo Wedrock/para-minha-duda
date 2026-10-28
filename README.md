@@ -6,9 +6,11 @@ Duas pessoas dançando em ASCII no ritmo de "I Wanna Be Yours", feito só com c�
 
 Abra o `index.html` no navegador, no computador ou no celular, e toque no botão de play. A música já vem dentro do arquivo.
 
-São duas músicas: "I Wanna Be Yours" e depois "Te Vivo". No fim da primeira aparece o link "próxima música". Para abrir direto na segunda, use o endereço com `#te-vivo` no final.
+São três páginas: "I Wanna Be Yours", "Te Vivo" e a poesia. No fim de cada uma aparece o link para a próxima. Para abrir direto na segunda, use o endereço com `#te-vivo` no final.
 
 Na segunda, a dança é de salão sertaneja, devagar: "dois pra lá, dois pra cá" abraçadinhos, um giro, uma abertura de mãos dadas, uma inclinada pra trás (cambré) e o abraço final.
+
+Depois vem a poesia, "Soneto de Fidelidade" (Vinicius de Moraes), com o áudio de alguém recitando: um coração se forma com "te amo" e cada palavra aparece na hora em que é falada. Endereço direto: `#poesia`.
 
 Para ter um link, ative o GitHub Pages em Settings → Pages (branch `master`, pasta `/`).
 
