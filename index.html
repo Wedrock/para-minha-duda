@@ -42,28 +42,30 @@
     font-size: clamp(44px, 12vw, 72px); line-height: 1;
     color: var(--lilas); transform: rotate(-3deg);
   }
+  .tocar { display: flex; align-items: center; gap: 14px; }
   button {
-    font: 400 15px/1.4 var(--mono); color: var(--fg);
-    background: none; border: 0; padding: 4px 0; cursor: pointer; text-align: left;
+    width: 68px; height: 68px; flex: none; border-radius: 50%;
+    display: grid; place-items: center; padding: 0; cursor: pointer;
+    background: var(--lilas); border: 0; color: var(--bg);
+    transition: transform .15s ease, background .15s ease;
   }
-  button .cifrao { color: var(--violeta); }
-  button small { display: block; margin-top: 6px; font-size: 11px; color: var(--muted); }
-  button .cursor {
-    display: inline-block; width: .6em; height: 1.1em; margin-left: 4px;
-    vertical-align: -0.2em; background: var(--lilas);
-    animation: pisca 1.1s steps(1) infinite;
-  }
-  button:hover .cmd { text-decoration: underline; text-decoration-color: var(--violeta); text-underline-offset: 4px; }
-  button:focus-visible { outline: 1px dashed var(--lilas); outline-offset: 6px; }
-  @keyframes pisca { 50% { opacity: 0; } }
-  @media (prefers-reduced-motion: reduce) { .capa { transition: none; } button .cursor { animation: none; } }
+  button svg { width: 26px; height: 26px; margin-left: 4px; }
+  button:hover { background: var(--fg); transform: scale(1.05); }
+  button:active { transform: scale(.96); }
+  button:focus-visible { outline: 2px solid var(--lilas); outline-offset: 4px; }
+  .tocar p { margin: 0; font-size: 13px; line-height: 1.5; color: var(--muted); }
+  .tocar p b { display: block; font-weight: 400; color: var(--fg); }
+  @media (prefers-reduced-motion: reduce) { .capa, button { transition: none; } }
 </style>
 
 <div class="palco"><canvas id="tela" aria-label="Duas pessoas feitas de letras dançando"></canvas></div>
 <div class="capa" id="capa">
   <div class="capa-box">
     <h1>Para minha princesa</h1>
-    <button id="play" type="button"><span class="cifrao">$</span> <span class="cmd" id="cmd">python danca.py</span><span class="cursor"></span><small>toca aqui, com o som ligado</small></button>
+    <div class="tocar">
+      <button id="play" type="button" aria-label="Play"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.5v17l14-8.5z" fill="currentColor"/></svg></button>
+      <p><b id="cmd">play</b>liga o som</p>
+    </div>
   </div>
 </div>
 
@@ -415,7 +417,7 @@ function loop() {
 function terminar() {
   tocando = false;
   desenhar(PREVIA);
-  document.getElementById("cmd").textContent = "python danca.py --de-novo";
+  document.getElementById("cmd").textContent = "ver de novo";
   capa.classList.remove("sumindo");
 }
 botao.addEventListener("click", () => {
