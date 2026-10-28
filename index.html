@@ -387,7 +387,13 @@ function desenharPoesia(cena, t) {
   ctx.globalCompositeOperation = "source-over";
   ctx.globalAlpha = 1;
   if (pulo) ctx.clearRect(0, 0, Wc, Hc);
-  else { ctx.fillStyle = "rgba(8,5,13,0.5)"; ctx.fillRect(0, 0, Wc, Hc); }
+  else {
+    // apaga metade do quadro anterior deixando o fundo transparente (sem caixa escura)
+    ctx.globalCompositeOperation = "destination-out";
+    ctx.fillStyle = "rgba(0,0,0,0.5)";
+    ctx.fillRect(0, 0, Wc, Hc);
+    ctx.globalCompositeOperation = "source-over";
+  }
 
   const zoom = 1 + 0.22 * smooth(61.8, 64.5, t);
   const bate = 1 + 0.018 * Math.max(0, Math.sin(t * 2 * Math.PI / 1.05)) * smooth(14, 16, t);
