@@ -326,12 +326,13 @@ function pulos(cena, t, faixas, altura) {
   return 0;
 }
 
-// ------------------------------------------------------------ cena 3: Combustível
-// Mais animada: palmas, mãos dadas balançando, giros dos dois, forró rapidinho,
-// pulinhos, troca de lugar e um cambré no final.
+// ------------------------------------------------------------ cena 3: Pra Sempre com Você (Jorge & Mateus)
+// Sertanejo animado: palmas, mãos dadas balançando, giros dos dois, o passo básico
+// do sertanejo abraçadinho (dois pra lá, dois pra cá quicando), pulinhos,
+// troca de lugar e um cambré no final.
 const CENA3 = {
-  id: "combustivel", titulo: "Combustível", faixa: "música 3 de 3",
-  arquivo: "combustivel.py", audio: MUSICA3, dur: 59.6, beat: 0.612, beat0: 0.165,
+  id: "pra-sempre-com-voce", titulo: "Pra sempre com você", faixa: "música 3 de 3",
+  arquivo: "pra_sempre_com_voce.py", audio: MUSICA3, dur: 59.6, beat: 0.612, beat0: 0.165,
   letra: [
     [3.5, 5.8, "a gente se conheceu há pouco tempo"],
     [6.0, 6.9, "mas a gente já"],
@@ -348,14 +349,14 @@ const CENA3 = {
     [32.3, 34.0, "esse seu sorriso"],
     [35.0, 36.0, "é o combustível"],
     [38.0, 38.8, "pra eu viver"],
-    [45.0, 47.2, "você me pedir pra ficar"],
+    [45.0, 47.2, "se você me pedir pra ficar"],
     [47.5, 49.0, "pra sempre com você"],
-    [50.0, 52.2, "vou pensar zero vezes pra te responder"],
+    [50.0, 52.2, "não vou pensar duas vezes pra te responder"],
     [53.0, 54.2, "cê sabe que"],
     [54.5, 56.5, "eu vou, vou"],
     [57.0, 59.2, "vou, pego minhas coisas e vou"],
   ],
-  dedicatoria: "♥  você é meu combustível  ♥", dedicT: 57.4,
+  dedicatoria: "♥  pra sempre com você  ♥", dedicT: 57.4,
   coracaoT: [57.2, 58.6], particulasT: 32.0, previa: 58.5,
   pose(t) {
     const P = this.beat, s = sway(this, t);
@@ -369,15 +370,15 @@ const CENA3 = {
     const praLa = Math.sin(2 * Math.PI * (t - this.beat0) / (4 * P));
     const abraco = janela(22.0, 23.0, 28.4, 29.2, t) + smooth(56.8, 57.6, t);
     return {
-      cx: W / 2 + 7 * praLa * salao + 2.5 * s * (1 - salao),
+      cx: W / 2 + 4.5 * praLa * salao + 2.5 * s * (1 - salao),
       dist,
       giro: 4 * Math.PI * smooth(8.4, 11.6, t) + 6 * Math.PI * smooth(32.4, 38.4, t) + 2 * Math.PI * smooth(45.2, 46.8, t),
       giroVel: janela(8.4, 9.0, 11.0, 11.6, t) + janela(32.4, 33.0, 37.8, 38.4, t) + janela(45.2, 45.6, 46.4, 46.8, t),
       giroB: 2 * Math.PI * smooth(18.2, 19.6, t),
       pulo: pulos(this, t, [[20.1, 21.7], [54.3, 56.7]], 5),
       energia: 1 - 0.65 * abraco,
-      perto: 0.11 * abraco,
-      cabecas: 0.16 * abraco,
+      perto: 0.11 * abraco + 0.07 * salao,                         // no sertanejo eles dançam coladinhos
+      cabecas: 0.16 * abraco + 0.08 * salao,
       cambre: janela(58.0, 58.7, 60.0, 61.0, t),
     };
   },
@@ -392,7 +393,7 @@ const CENA3 = {
     maosDadas(alvo, p, ombros, Math.sin(Math.PI * fase), k(3.6, 4.4, 8.0, 8.5) + k(28.8, 29.6, 31.4, 32.2));
     // A gira por baixo do braço de B
     maosGiro(alvo, p, ombros, k(8.0, 8.6, 11.6, 12.3) + k(44.9, 45.3, 46.8, 47.3));
-    // forró abraçadinho / abraço
+    // sertanejo abraçadinho / abraço
     maosAbraco(alvo, p, ombros, k(12.2, 13.0, 17.8, 18.2) + k(21.8, 22.6, 28.4, 29.0) + k(47.0, 47.6, 52.8, 53.3) + smooth(56.8, 57.4, t));
     // B gira com as mãos pra cima e A bate palma
     maosAcima(alvo, p, ombros, "B", fase, k(18.0, 18.3, 19.6, 20.0));
