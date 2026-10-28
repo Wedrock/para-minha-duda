@@ -6,6 +6,10 @@ Duas pessoas dançando em ASCII no ritmo de "I Wanna Be Yours", feito só com c�
 
 Abra o `index.html` no navegador, no computador ou no celular, e toque no botão de play. A música já vem dentro do arquivo.
 
+São duas músicas: "I Wanna Be Yours" e depois "Te Vivo". No fim da primeira aparece o link "próxima música". Para abrir direto na segunda, use o endereço com `#te-vivo` no final.
+
+Na segunda, a dança é de salão sertaneja, devagar: "dois pra lá, dois pra cá" abraçadinhos, um giro, uma abertura de mãos dadas, uma inclinada pra trás (cambré) e o abraço final.
+
 Para ter um link, ative o GitHub Pages em Settings → Pages (branch `master`, pasta `/`).
 
 ## Rodar no terminal
