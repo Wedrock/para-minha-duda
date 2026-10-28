@@ -40,7 +40,7 @@ LETRA = [
     (12.0, 13.6, "Wanna be yours"),
     (14.4, 16.4, "Wanna be yours.."),
 ]
-DEDICATORIA = "♥  para minha Duda  ♥"
+DEDICATORIA = "♥  eu te amo vida  ♥"
 
 CORE = "$@#&%8BWM0QD"
 MID = "abdhkpqwmZOJUCLXYzcvunxrj"
